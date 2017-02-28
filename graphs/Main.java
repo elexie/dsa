@@ -58,6 +58,9 @@ public class Main {
 				+ "\n" + adj);
 
 		//bfs and dfs
+		System.out.println("\ndfs:");
+		adj.dfs(0);
+		adj.dfs(adj.getNode(0));
 	}
 
 }

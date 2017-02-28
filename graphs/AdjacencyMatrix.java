@@ -13,6 +13,7 @@ public class AdjacencyMatrix<T> extends GraphADT<T> {
 
 	ArrayList<T> vertices;
 	int[][] adjacencyMatrix;
+	boolean[] visited;
 	int size;
 	int cap;
 
@@ -20,6 +21,7 @@ public class AdjacencyMatrix<T> extends GraphADT<T> {
 		vertices = new ArrayList<T>();
 		this.cap = cap;
 		adjacencyMatrix = new int[cap][cap];
+		visited = new boolean[cap];
 	}
 
 	@Override
@@ -181,4 +183,46 @@ public class AdjacencyMatrix<T> extends GraphADT<T> {
 	public T getNode(int index) {
 		return vertices.get(index);
 	}
+
+	// bfs recursive
+	public void bfs(T start) {
+		System.out.print("" + "\t");
+	}
+
+	/**
+	 * recursive implementation of bfs
+	 * @param start the index to begin from
+	 */
+	public void dfs(int start) {
+		visited[start]=true;
+		System.out.print(vertices.get(start)+" ");
+		int j=0;
+		for(j=0;j<vertices.size();j++){
+			//if there is a path between the two vertices
+			//and one of the vertices has not been printed
+			if(!visited[j]&&adjacencyMatrix[start][j]>0){
+				dfs(j);
+			}
+		}
+		
+
+	}
+	
+	/**
+	 * recursive implementation of bfs which 
+	 * allows the user to specify the vertex
+	 * instead
+	 * @param vertex
+	 */
+	public void dfs(T vertex){
+		int vertexIndex=vertices.indexOf(vertex);
+		visited[vertexIndex]=true;
+		System.out.print(vertex+" ");
+		int j=0;
+		for(j=0;j<vertices.size();j++){
+			if(!visited[vertexIndex]&&adjacencyMatrix[vertexIndex][j]>0)
+			dfs(vertexIndex);
+		}
+	}
+
 }
