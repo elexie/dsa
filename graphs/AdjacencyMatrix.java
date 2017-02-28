@@ -208,21 +208,5 @@ public class AdjacencyMatrix<T> extends GraphADT<T> {
 
 	}
 	
-	/**
-	 * recursive implementation of bfs which 
-	 * allows the user to specify the vertex
-	 * instead
-	 * @param vertex
-	 */
-	public void dfs(T vertex){
-		int vertexIndex=vertices.indexOf(vertex);
-		visited[vertexIndex]=true;
-		System.out.print(vertex+" ");
-		int j=0;
-		for(j=0;j<vertices.size();j++){
-			if(!visited[vertexIndex]&&adjacencyMatrix[vertexIndex][j]>0)
-			dfs(vertexIndex);
-		}
-	}
 
 }

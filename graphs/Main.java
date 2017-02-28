@@ -60,7 +60,6 @@ public class Main {
 		//bfs and dfs
 		System.out.println("\ndfs:");
 		adj.dfs(0);
-		adj.dfs(adj.getNode(0));
 	}
 
 }
