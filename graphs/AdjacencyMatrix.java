@@ -1,6 +1,8 @@
 package graphs;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * An Adjacency Matrix implementation of a weighted and directed Graph
@@ -14,6 +16,7 @@ public class AdjacencyMatrix<T> extends GraphADT<T> {
 	ArrayList<T> vertices;
 	int[][] adjacencyMatrix;
 	boolean[] visited;
+	boolean[] visitedDFS;
 	int size;
 	int cap;
 
@@ -22,6 +25,7 @@ public class AdjacencyMatrix<T> extends GraphADT<T> {
 		this.cap = cap;
 		adjacencyMatrix = new int[cap][cap];
 		visited = new boolean[cap];
+		visitedDFS=new boolean[cap];
 	}
 
 	@Override
@@ -184,29 +188,78 @@ public class AdjacencyMatrix<T> extends GraphADT<T> {
 		return vertices.get(index);
 	}
 
-	// bfs recursive
-	public void bfs(T start) {
-		System.out.print("" + "\t");
+	public void bfs() {
+		visited = new boolean[cap];
+		LinkedList<Integer> list = new LinkedList<Integer>();
+		// every vertex
+		list.add(0); // by default, add the first vertex to the list
+		visited[0] = true; // mark the first vertex as visited
+		System.out.print(vertices.get(0)+" "); // print the first vertex
+		LinkedList<Integer> neighbors = getNeighbors(0);// neighbor(s) of
+
+		int visitedIndex = 0; // index of a node that has been visited
+		while (list.size() != 0) { // while there are still unvisited nodes
+			while (neighbors.size() != 0) {// print the neighbors of the
+											// current vertex
+				visitedIndex = Integer.parseInt("" + neighbors.peek());
+				visited[visitedIndex] = true;
+				list.add(visitedIndex); // add this neighbor to the list so that
+										// its neighbors
+				// can be visited later
+
+				System.out.print((vertices.get(visitedIndex))+" ");
+				neighbors.remove(); // remove the printed neighbor
+			}
+			if (list.size() != 0) {
+				list.remove(); // remove the vertex since all its neighbors were
+								// printed
+				if (list.size() != 0) {
+					neighbors = getNeighbors(list.peek()); // get the neighbors
+															// of the next node
+				}
+
+			}
+		}
+
+	}
+
+	/**
+	 * @param vertexIndex
+	 * @return a list of all the unvisited indices (vertices) vertexIndex is
+	 *         connected to
+	 */
+	public LinkedList<Integer> getNeighbors(int vertexIndex) {
+		LinkedList<Integer> neighbors = new LinkedList<Integer>();
+		for (int x = 0; x < vertices.size(); x++) {
+			if (adjacencyMatrix[vertexIndex][x] > 0 && visited[x] == false) {
+				// System.out.println("x: "+x+". "+visited[x]);
+				neighbors.add(x);
+			}
+		}
+		return neighbors;
 	}
 
 	/**
 	 * recursive implementation of bfs
-	 * @param start the index to begin from
+	 * 
+	 * @param start
+	 *            the index to begin from
 	 */
 	public void dfs(int start) {
-		visited[start]=true;
-		System.out.print(vertices.get(start)+" ");
-		int j=0;
-		for(j=0;j<vertices.size();j++){
-			//if there is a path between the two vertices
-			//and one of the vertices has not been printed
-			if(!visited[j]&&adjacencyMatrix[start][j]>0){
+		// visited = new boolean[cap]; this line of code generates
+		// a stackoverflow error, so a separate array (visitedDFS)
+		// was created
+		visitedDFS[start] = true;
+		System.out.print(vertices.get(start) + " ");
+		int j = 0;
+		for (j = 0; j < vertices.size(); j++) {
+			// if there is a path between the two vertices
+			// and one of the vertices has not been printed
+			if (!visitedDFS[j] && adjacencyMatrix[start][j] > 0) {
 				dfs(j);
 			}
 		}
-		
 
 	}
-	
 
 }
